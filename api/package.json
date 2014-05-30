@@ -1,0 +1,35 @@
+{
+  "name": "ng-jwt-workshop",
+  "version": "0.0.0",
+  "description": "A repo to demonstrate JWT implemented with NodeJS and AngularJS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://kentcdodds@github.com/kentcdodds/ng-jwt-workshop.git"
+  },
+  "keywords": [
+    "jwt",
+    "json",
+    "web",
+    "token",
+    "authentication",
+    "angularjs",
+    "nodejs"
+  ],
+  "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kent.doddsfamily.us)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kentcdodds/ng-jwt-workshop/issues"
+  },
+  "homepage": "https://github.com/kentcdodds/ng-jwt-workshop",
+  "dependencies": {
+    "express": "^4.3.2",
+    "passport-local": "^1.0.0",
+    "cookie-parser": "^1.1.0",
+    "express-session": "^1.2.1",
+    "passport": "^0.2.0"
+  }
+}
