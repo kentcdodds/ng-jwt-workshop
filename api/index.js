@@ -2,6 +2,7 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -9,23 +10,47 @@ var LocalStrategy = require('passport-local').Strategy;
 var user = {
   username: 'kentcdodds',
   favoriteIceCream: 'Mint Chocolate Chip',
-  bigSecret: 'I am a gymnast'
+  bigSecret: 'I like Twix'
 };
 
 // setup server
 var app = express();
 app.use(cookieParser());
 app.use(session({
+  name: 'sessionId',
   secret: 'u3i59jldsgj9023458'
 }));
+
+app.use(bodyParser());
+
+
+// setup passport
 passport.use(new LocalStrategy(function(username, password, done) {
   console.log('here I am 1!');
-  if (username !== user.username || password !== 'p') {
+  if (username === user.username && password === 'p') {
     return done(null, user);
   } else {
     done(null, false, { message: 'Incorrect username or password' });
   }
 }));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.username);
+});
+
+passport.deserializeUser(function(username, done) {
+  if (username === 'kentcdodds') {
+    done(null, user);
+  } else {
+    done('No user with username ' + username);
+  }
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// serve app from server
+app.use(express.static(__dirname + '/frontend'));
 
 // setup cors
 app.use(function(req, res, next) {
@@ -38,18 +63,42 @@ app.use(function(req, res, next) {
 
 
 // setup routes
-app.post('/login', function(req, res) {
-  passport.authenticate('local', function(err, user) {
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
     if (err) {
-      res.json(500, err);
-    } else {
-      res.json(user);
+      return next(err);
     }
-  });
+    if (!user) {
+      return res.json(404, 'No user found...');
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json(200, user);
+    });
+  })(req, res, next);
 });
 
-app.get('*', function(req, res) {
-  res.send('hello');
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.json(200, { success: true });
+});
+
+app.get('/users/me', function(req, res) {
+  if (req.user) {
+    res.json(user);
+  } else {
+    res.json(403, { message: 'Not authorized' });
+  }
+});
+
+app.get('/funny-pic', function(req, res) {
+  if (req.user) {
+    res.sendfile(__dirname + '/funny-pic.jpg');
+  } else {
+    res.json(403, { message: 'Not authorized' });
+  }
 });
 
 // listen on port

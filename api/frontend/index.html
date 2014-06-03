@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="ng.jwt.workshop">
+<head>
+  <title>NG-JWT-Workshop</title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="animate.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="angular.js"></script>
+</head>
+<body ng-controller="MainCtrl" class="ng-cloak">
+<div id="fullscreen_bg" class="fullscreen_bg"></div>
+<div class="alert alert-{{alert.type}} animated main-alert" ng-class="{'fadeInRight': alert.show, 'fadeOutLeft': !alert.show, 'hidden': !alert.hasBeenShown}"><strong>{{alert.title}}</strong> {{alert.message || 'Oh... how are you seeing this?'}}</div>
+<div class="main-wrapper" ng-class="{'ng-hide': !meRequestComplete}">
+
+  <div class="container animated" ng-class="{'fadeInDown': !user, 'fadeOutDown': user, 'ng-hide': user && alreadyLoggedIn}">
+    <form class="form-signin animated" ng-submit="login(username, password)" ng-class="{'shake': badCreds}">
+      <h1 class="form-signin-heading text-muted">Sign In</h1>
+      <input type="text" class="form-control" placeholder="kentcdodds" ng-model="username" autofocus>
+      <input type="password" class="form-control" placeholder="p" ng-model="password">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+    </form>
+  </div>
+  <div class="container animated data-stuff" ng-class="{'fadeInDown': user, 'fadeOutDown': !user, 'ng-hide': !user && meRequestComplete}">
+    Username: {{user.username}} | <a ng-click="logout()">Logout</a><br />
+    Favorite Ice Cream: {{user.favoriteIceCream}}<br />
+    Big Secret: {{user.bigSecret}}<br />
+    <br />
+    <button class="btn btn-primary" ng-click="getMyFunnyPicture()">Get My Funny Picture</button>
+    <br />
+    <br />
+    <img ng-src="{{funnyPictureUrl}}">
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
