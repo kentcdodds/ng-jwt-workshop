@@ -9,7 +9,7 @@
       $http.get(API_BASE + 'users/me').then(function success(response) {
         $scope.user = response.data;
         $scope.alreadyLoggedIn = true;
-        showAlert('info', 'Welcome back! ' + $scope.user.username);
+        showAlert('info', 'Hello', 'and welcome back ' + $scope.user.username + '!');
       }, function error() {
         console.log('getting user error', arguments);
       }).finally(function() {
@@ -30,6 +30,7 @@
         }
       }).then(function success(response) {
         $scope.user = response.data;
+        $scope.noPicture = true;
         showAlert('success', 'Hey there!', 'Welcome ' + $scope.user.username + '!');
       }, function error(response) {
         if (response.status === 404) {
@@ -40,12 +41,17 @@
         }
       });
     };
-    $scope.getMyFunnyPicture = function() {
-      $scope.funnyPictureUrl = API_BASE + 'funny-pic';
-      showAlert('success', 'Alrighty!', 'Here you go!');
+    $scope.toggleFunnyPicture = function() {
+      $scope.noPicture = false;
+      if ($scope.funnyPictureUrl) {
+        $scope.funnyPictureUrl = null;
+      } else {
+        $scope.funnyPictureUrl = API_BASE + 'funny-pic';
+      }
     };
 
     $scope.logout = function() {
+      $scope.funnyPictureUrl = null;
       $http.get(API_BASE + 'logout').then(function() {
         $scope.user = null;
         showAlert('info', 'Goodbye!', 'Have a great day!');

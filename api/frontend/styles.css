@@ -1,7 +1,7 @@
 .main-alert {
   max-width: 400px;
   margin: 0 auto;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 .main-wrapper {
@@ -24,23 +24,55 @@
 
 a {
   cursor: pointer;
+  color: #FF8B8B;
+}
+a:hover, a:focus {
+  color: #FF4D4D;
+  text-decoration: none;
 }
 
-.hidden {
+.alert-hidden {
   visibility: hidden;
+}
+
+
+.funny-pic {
+  max-width: 570px;
+  max-height: 450px;
+}
+
+button {
+  outline: none;
 }
 
 .ng-cloak {
   display: none;
 }
 
+#footer {
+  color: #FFF;
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 16px;
+}
 
-/* copy paste from: http://bootsnipp.com/snippets/featured/login-screen-with-background  */
+#footer a {
+  color: #DADADA;
+}
+
+#footer a:hover, #footer a:focus {
+  color: #b3b3b3;
+}
+
+
+/* basically a copy paste from: http://bootsnipp.com/snippets/featured/login-screen-with-background  */
 body {
-  padding-top: 120px;
+  padding-top: 20px;
   padding-bottom: 40px;
   background-color: #eee;
-
 }
 .btn
 {

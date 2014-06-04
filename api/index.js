@@ -12,6 +12,7 @@ var user = {
   favoriteIceCream: 'Mint Chocolate Chip',
   bigSecret: 'I like Twix'
 };
+var userPassword = 'p';
 
 // setup server
 var app = express();
@@ -26,8 +27,7 @@ app.use(bodyParser());
 
 // setup passport
 passport.use(new LocalStrategy(function(username, password, done) {
-  console.log('here I am 1!');
-  if (username === user.username && password === 'p') {
+  if (username === user.username && password === userPassword) {
     return done(null, user);
   } else {
     done(null, false, { message: 'Incorrect username or password' });
@@ -93,9 +93,18 @@ app.get('/users/me', function(req, res) {
   }
 });
 
+var funnyPicIndex = -1;
+function getNextFunnyPic() {
+  funnyPicIndex++;
+  if (funnyPicIndex > 12) {
+    funnyPicIndex = 0;
+  }
+  return __dirname + '/funny-pics/' + funnyPicIndex + '.jpg';
+}
+
 app.get('/funny-pic', function(req, res) {
   if (req.user) {
-    res.sendfile(__dirname + '/funny-pic.jpg');
+    res.sendfile(getNextFunnyPic());
   } else {
     res.json(403, { message: 'Not authorized' });
   }
