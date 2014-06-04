@@ -12,7 +12,7 @@ var user = {
   favoriteIceCream: 'Mint Chocolate Chip',
   bigSecret: 'I like Twix'
 };
-var userPassword = 'p';
+var userPassword = 'iliketwix';
 
 // setup server
 var app = express();
@@ -93,7 +93,7 @@ app.get('/users/me', function(req, res) {
   }
 });
 
-var funnyPicIndex = -1;
+var funnyPicIndex = Math.floor(Math.random()*12);
 function getNextFunnyPic() {
   funnyPicIndex++;
   if (funnyPicIndex > 12) {

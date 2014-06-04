@@ -41,10 +41,6 @@ a:hover, a:focus {
   max-height: 450px;
 }
 
-button {
-  outline: none;
-}
-
 .ng-cloak {
   display: none;
 }
@@ -68,9 +64,9 @@ button {
 }
 
 
-/* basically a copy paste from: http://bootsnipp.com/snippets/featured/login-screen-with-background  */
+/* a copy paste from: http://bootsnipp.com/snippets/featured/login-screen-with-background  */
 body {
-  padding-top: 20px;
+  padding-top: 40px;
   padding-bottom: 40px;
   background-color: #eee;
 }
