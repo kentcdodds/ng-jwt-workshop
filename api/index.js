@@ -22,6 +22,16 @@ app.use(session({
 app.use(bodyParser());
 
 
+// setup cors
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  next();
+});
+
+
 // setup passport
 passport.use(new LocalStrategy(function(username, password, done) {
   if (username === user.username && password === userPassword) {
