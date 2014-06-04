@@ -1,7 +1,7 @@
 // Require deps
 var express = require('express');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -13,13 +13,22 @@ delete user.password;
 
 // setup server
 var app = express();
-app.use(cookieParser());
-app.use(session({
-  name: 'sessionId',
-  secret: 'u3i59jldsgj9023458'
-}));
 
 app.use(bodyParser());
+
+// setup jwt
+var jwtSuperSecretCode = 'super-secret-key';
+var validateJwt = expressJwt({secret: jwtSuperSecretCode});
+app.use('/', function (req, res, next) {
+  if (req.originalUrl === '/login') {
+    next();
+  } else {
+    if(req.query && req.query.hasOwnProperty('access_token')) {
+      req.headers.authorization = 'Bearer ' + req.query.access_token;
+    }
+    validateJwt(req, res, next);
+  }
+});
 
 
 // setup cors
@@ -54,7 +63,6 @@ passport.deserializeUser(function(username, done) {
 });
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 // serve app from server
 app.use(express.static(__dirname + '/frontend'));
@@ -72,7 +80,10 @@ app.post('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.json(200, user);
+      var token = jwt.sign({
+        username: user.username
+      }, jwtSuperSecretCode);
+      return res.json(200, { token: token, user: user });
     });
   })(req, res, next);
 });
