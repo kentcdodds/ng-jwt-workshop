@@ -1,7 +1,7 @@
 (function() {
   var app = angular.module('ng.jwt.workshop', []);
   
-  app.constant('API_BASE', 'http://localhost:3000/');
+  app.constant('API_BASE', 'http://api.jwtftw.dev:3000/');
   
   app.controller('MainCtrl', function($scope, $http, API_BASE, $timeout) {
 
