@@ -7,12 +7,9 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 // Database
-var user = {
-  username: 'kentcdodds',
-  favoriteIceCream: 'Mint Chocolate Chip',
-  bigSecret: 'I like Twix'
-};
-var userPassword = 'iliketwix';
+var user = require('./user.json');
+var userPassword = user.password;
+delete user.password;
 
 // setup server
 var app = express();
@@ -39,7 +36,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
-  if (username === 'kentcdodds') {
+  if (username === user.username) {
     done(null, user);
   } else {
     done('No user with username ' + username);
@@ -51,16 +48,6 @@ app.use(passport.session());
 
 // serve app from server
 app.use(express.static(__dirname + '/frontend'));
-
-// setup cors
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  next();
-});
-
 
 // setup routes
 app.post('/login', function(req, res, next) {
