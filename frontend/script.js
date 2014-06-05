@@ -60,6 +60,7 @@
         $scope.alreadyLoggedIn = true;
         showAlert('info', 'Hello', 'and welcome back ' + $scope.user.username + '!');
       }, function error() {
+        AuthToken.clearToken();
         console.log('getting user error', arguments);
       }).finally(function() {
         $scope.meRequestComplete = true;
