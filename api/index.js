@@ -5,9 +5,15 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var fs = require('fs');
+
 
 // Database
-var user = require('./user.json');
+var dbFile = './user.json';
+if (fs.existsSync(__dirname + '/user.local.json')) {
+  dbFile = './user.local.json';
+}
+var user = require(dbFile);
 var userPassword = user.password;
 delete user.password;
 
