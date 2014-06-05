@@ -86,6 +86,7 @@
         AuthToken.setToken(response.data.token);
         $scope.user = response.data.user;
         $scope.noPicture = true;
+        $scope.alreadyLoggedIn = true;
         showAlert('success', 'Hey there!', 'Welcome ' + $scope.user.username + '!');
       }, function error(response) {
         if (response.status === 404) {
@@ -107,13 +108,9 @@
 
     $scope.logout = function() {
       $scope.funnyPictureUrl = null;
-      $http.get(API_BASE + 'logout').then(function() {
-        $scope.user = null;
-        showAlert('info', 'Goodbye!', 'Have a great day!');
-      }, function() {
-        showAlert('danger', 'Uh oh!', 'Error logging out! Sorry!');
-        console.log('logout error', arguments);
-      });
+      AuthToken.clearToken();
+      $scope.user = null;
+      showAlert('info', 'Goodbye!', 'Have a great day!');
     };
 
     $scope.sendFeedback = function(feedback) {
