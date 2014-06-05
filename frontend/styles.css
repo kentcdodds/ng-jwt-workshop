@@ -45,6 +45,64 @@ a:hover, a:focus {
   display: none;
 }
 
+.form-feedback {
+  max-width: 280px;
+  padding: 15px;
+  margin: 0 auto;
+  margin-top:20px;
+}
+
+.form-feedback .form-feedback-heading, .form-feedback {
+  margin-bottom: 10px;
+}
+.form-feedback .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.form-feedback .form-control:focus {
+  z-index: 2;
+}
+.form-feedback .form-control {
+  border-radius: 0;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-top-style: none;
+  border-bottom-style: none;
+  border-color: #000;
+}
+.form-feedback .form-control:first-child {
+  margin-bottom: -1px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: none;
+  border-left-style: solid;
+  border-color: #000;
+}
+.form-feedback .form-control:last-child {
+  margin-bottom: 10px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-style: none;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-color: rgb(0,0,0);
+  border-top:1px solid rgba(0,0,0,0.08);
+}
+.form-feedback-heading {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+
 #footer {
   color: #FFF;
   position: absolute;

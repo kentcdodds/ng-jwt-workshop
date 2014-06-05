@@ -1,6 +1,7 @@
 (function() {
   var app = angular.module('ng.jwt.workshop', []);
-  
+
+  app.constant('Firebase', Firebase);
   app.constant('API_BASE', 'http://api.jwtftw.dev:3000/');
   app.factory('AuthToken', function($window) {
     var tokenKey = 'user-token';
@@ -51,7 +52,7 @@
     };
   });
   
-  app.controller('MainCtrl', function($scope, $http, API_BASE, $timeout, AuthToken, $window) {
+  app.controller('MainCtrl', function($scope, $http, API_BASE, $timeout, AuthToken, $window, Firebase) {
 
     $scope.getMe = function() {
       $http.get(API_BASE + 'users/me').then(function success(response) {
@@ -114,8 +115,37 @@
       });
     };
 
+    $scope.sendFeedback = function(feedback) {
+      var d = new Date();
+      var formattedDate = d.getFullYear() + '-' + addZero(d.getMonth() + 1) + '-' + addZero(d.getDate());
+      var url = 'https://ng-jwt-workshop.firebaseio.com/' + formattedDate;
+      var feedbackRef = new Firebase(url);
+      feedbackRef.push(feedback);
+      showAlert('info', 'Sent!', 'Thanks for the feedback!');
+      $scope.showFeedback = false;
+    };
+    function addZero(num) {
+      return (num < 10 ? '0' : '') + num;
+    }
+
+    $scope.showAppropriateAlertForScore = function(feedback) {
+      if (feedback.score !== 0 && !feedback.score) {
+        return;
+      }
+      var timeout = 5000;
+      if (feedback.score <= 3) {
+        showAlert('danger', ['Ouch', feedback.name].join(' ').trim() + '!', 'That hurt... I hope next time I can do better for you... Suggestions welcome.', timeout);
+      } else if (feedback.score <= 6) {
+        showAlert('warning', ['Huh', feedback.name].join(' ').trim() + '...', 'I appreciate any constructive suggestions you have!', timeout);
+      } else if (feedback.score <= 9) {
+        showAlert('info', ['Great', feedback.name].join(' ').trim() + '!', 'Much appreciated, I\'d love to know what I can improve to make it perfect!', timeout);
+      } else {
+        showAlert('success', ['Wow', feedback.name].join(' ').trim() + '!', 'Gee! Thanks for the perfect score! What made it so good?', timeout);
+      }
+    };
+
     var alertTimeout;
-    function showAlert(type, title, message) {
+    function showAlert(type, title, message, timeout) {
       $scope.alert = {
         hasBeenShown: true,
         show: true,
@@ -126,7 +156,7 @@
       $timeout.cancel(alertTimeout);
       alertTimeout = $timeout(function() {
         $scope.alert.show = false;
-      }, 1500);
+      }, timeout || 1500);
     }
   });
 

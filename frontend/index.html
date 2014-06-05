@@ -12,24 +12,38 @@
 <div id="fullscreen_bg" class="fullscreen_bg"></div>
 <div class="alert alert-{{alert.type}} animated main-alert" ng-class="{'fadeInRight': alert.show, 'fadeOutLeft': !alert.show, 'alert-hidden': !alert.hasBeenShown}"><strong>{{alert.title}}</strong> {{alert.message || 'Oh... how are you seeing this?'}}</div>
 <div class="main-wrapper" ng-class="{'ng-hide': !meRequestComplete}">
-
-  <div class="container animated" ng-class="{'fadeInDown': !user, 'fadeOutDown': user, 'ng-hide': alreadyLoggedIn && user}">
-    <form class="form-signin animated" ng-submit="login(username, password)" ng-class="{'shake': badCreds}">
-      <h1 class="form-signin-heading text-muted">Sign In</h1>
-      <input type="text" class="form-control" placeholder="Username" ng-model="username" autofocus>
-      <input type="password" class="form-control" placeholder="Password" ng-model="password">
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
-    </form>
+  <div ng-hide="showFeedback">
+    <div class="container animated" ng-class="{'fadeInDown': !user, 'fadeOutDown': user, 'ng-hide': alreadyLoggedIn && user}">
+      <form class="form-signin animated" ng-submit="login(username, password)" ng-class="{'shake': badCreds}">
+        <h1 class="form-signin-heading text-muted">Sign In</h1>
+        <input type="text" class="form-control" placeholder="Username" ng-model="username" autofocus>
+        <input type="password" class="form-control" placeholder="Password" ng-model="password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+      </form>
+    </div>
+    <div class="container animated data-stuff" ng-class="{'fadeInDown': user, 'ng-hide': !user}">
+      Username: {{user.username}} | <a ng-click="logout()">Logout</a><br />
+      Favorite Ice Cream: {{user.favoriteIceCream}}<br />
+      Big Secret: {{user.bigSecret}}<br />
+      <br />
+      <button class="btn btn-primary" style="outline:none" ng-click="toggleFunnyPicture()">{{funnyPictureUrl ? 'Hide The Funny Picture' : 'Get My Funny Picture'}}</button>
+      <br />
+      <br />
+      <img ng-src="{{funnyPictureUrl}}" ng-if="!noPicture" class="animated funny-pic" ng-class="{'bounceInUp': funnyPictureUrl, 'hinge': !funnyPictureUrl}">
+    </div>
   </div>
-  <div class="container animated data-stuff" ng-class="{'fadeInDown': user, 'ng-hide': !user}">
-    Username: {{user.username}} | <a ng-click="logout()">Logout</a><br />
-    Favorite Ice Cream: {{user.favoriteIceCream}}<br />
-    Big Secret: {{user.bigSecret}}<br />
-    <br />
-    <button class="btn btn-primary" style="outline:none" ng-click="toggleFunnyPicture()">{{funnyPictureUrl ? 'Hide The Funny Picture' : 'Get My Funny Picture'}}</button>
-    <br />
-    <br />
-    <img ng-src="{{funnyPictureUrl}}" ng-if="!noPicture" class="animated funny-pic" ng-class="{'bounceInUp': funnyPictureUrl, 'hinge': !funnyPictureUrl}">
+  <div ng-show="showFeedback">
+    <form class="form-feedback animated" ng-submit="sendFeedback(feedback)" ng-class="{'fadeInDown': sendFeedback}">
+      <h1 class="form-feedback-heading text-muted">Send Feedback</h1>
+      <div>
+        <input type="text" class="form-control" placeholder="Your Name" ng-model="feedback.name">
+        <input type="email" class="form-control" placeholder="Your Email (optional)" ng-model="feedback.email">
+        <input type="number" class="form-control" placeholder="Score (0 poor - 10 excellent)" ng-model="feedback.score" required max="10" min="0" ng-blur="showAppropriateAlertForScore(feedback)">
+        <textarea class="form-control" placeholder="Suggestions / Kudos / etc." ng-model="feedback.comments" rows="4"></textarea>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Submit Feedback</button>
+      <small class="text-muted">^^ This actually works if you're running a server... Please submit feedback :-)</small>
+    </form>
   </div>
 </div>
 
@@ -43,10 +57,12 @@
   <a href="http://daneden.github.io/animate.css/">Animate.css</a><br />
   Built to demonstrate why and how to use
   <a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">JSON Web Tokens</a>
-  for authentication.
-  <a href="https://slides.com/kentdodds/ng-jwt-workshop">See the slide deck.</a>
+  for authentication.<br />
+  <a href="https://slides.com/kentdodds/ng-jwt-workshop">See the slide deck</a> |
+  <a ng-click="showFeedback=!showFeedback">{{showFeedback ? 'Back to the app' : 'Submit Feedback'}}</a>
 </div>
 
+<script src="firebase.js"></script>
 <script src="script.js"></script>
 
 
