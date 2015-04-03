@@ -1,3 +1,7 @@
 *.local.*
 .DS_Store
 node_modules/
+
+.idea
+dist
+*.log

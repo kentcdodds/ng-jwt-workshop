@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="lib/animate.css">
+  <link rel="stylesheet" href="lib/styles.css">
+
+
+  <!-- ES6-related imports -->
+  <script src="lib/traceur-runtime.js"></script>
+  <script src="lib/es6-module-loader-sans-promises.src.js"></script>
+  <script src="lib/extension-register.js"></script>
+  <script src="lib/extension-cjs.js"></script>
+  <script>
+    System.paths = {
+      'rx/dist/rx.all': 'lib/rx.all.js',
+      'angular2/*': 'lib/angular2.js',
+      '*': '*.js'
+    };
+    register(System);
+    cjs(System);
+  </script>
+
+  <!-- Angular2-related imports -->
+  <script src="lib/zone.js"></script>
+  <script src="lib/axios.js"></script>
+  <script src="lib/long-stack-trace-zone.js"></script>
+  <script src="lib/angular2.js"></script>
+</head>
+<body>
+<div id="fullscreen_bg" class="fullscreen_bg"></div>
+
+<app></app>
+
+<div id="footer">
+  Built with ♥ by <a href="http://kent.doddsfamily.us">Kent C. Dodds</a> using
+  <a href="http://nodejs.org/">NodeJS</a>,
+  <a href="http://expressjs.com/">ExpressJS</a>,
+  <a href="http://passportjs.org/">PassportJS</a>,
+  <a href="http://www.angular.io">Angular 2</a>,
+  <a href="http://getbootstrap.com/">Bootstrap 3</a>, and
+  <a href="http://daneden.github.io/animate.css/">Animate.css</a><br />
+  Built to demonstrate why and how to use
+  <a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">JSON Web Tokens</a>
+  for authentication.<br />
+  <a href="https://slides.com/kentdodds/ng2-jwt-workshop">See the slide deck</a>
+</div>
+
+</body>
+
+<!-- Application bootstrap logic -->
+<script>
+  //TODO: we need some defaults for this in the FRW
+  //TODO: maybe we could use sth like <div ng-app="app::AppCmpt"></div> or similar?
+
+  Promise.all([
+    System.import('angular2/core'),
+    System.import('angular2/di'),
+    System.import('app')
+  ]).then(function(modules) {
+    var angular = modules[0];
+    var bind = modules[1].bind;
+    var App = modules[2].App;
+    angular.bootstrap(App, [
+    ]);
+  }, console.log.bind(console));
+</script>
+
+</html>
